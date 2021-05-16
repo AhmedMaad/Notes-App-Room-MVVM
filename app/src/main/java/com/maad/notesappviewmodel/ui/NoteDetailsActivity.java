@@ -1,4 +1,4 @@
-package com.maad.notesappviewmodel;
+package com.maad.notesappviewmodel.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.maad.notesappviewmodel.utils.Constants;
+import com.maad.notesappviewmodel.database.NoteModel;
+import com.maad.notesappviewmodel.NoteViewModel;
+import com.maad.notesappviewmodel.R;
 
 public class NoteDetailsActivity extends AppCompatActivity {
 
@@ -30,11 +35,11 @@ public class NoteDetailsActivity extends AppCompatActivity {
         titleET = findViewById(R.id.et_title);
         descET = findViewById(R.id.et_description);
 
-        receivedId = getIntent().getIntExtra("id", -1);
+        receivedId = getIntent().getIntExtra(Constants.ID, -1);
         if (receivedId != -1) {
             setTitle(R.string.update_note);
-            titleET.setText(getIntent().getStringExtra("title"));
-            descET.setText(getIntent().getStringExtra("desc"));
+            titleET.setText(getIntent().getStringExtra(Constants.TITLE));
+            descET.setText(getIntent().getStringExtra(Constants.DESCRIPTION));
             Button updateBtn = findViewById(R.id.btn_update);
             updateBtn.setVisibility(View.VISIBLE);
             openedAsUpdate = true;
@@ -82,7 +87,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
     public void updateNote(View view) {
         String writtenTitle = titleET.getText().toString();
         String writtenDesc = descET.getText().toString();
-        int noteID = getIntent().getIntExtra("id", -1);
+        int noteID = getIntent().getIntExtra(Constants.ID, -1);
         NoteModel note = new NoteModel(noteID, writtenTitle, writtenDesc);
         viewModel.updateNote(note);
         Toast.makeText(this, R.string.note_updated, Toast.LENGTH_SHORT).show();

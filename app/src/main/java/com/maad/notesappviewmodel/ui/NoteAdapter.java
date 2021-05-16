@@ -1,15 +1,16 @@
-package com.maad.notesappviewmodel;
+package com.maad.notesappviewmodel.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.maad.notesappviewmodel.R;
+import com.maad.notesappviewmodel.database.NoteModel;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.notes = notes;
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position, NoteModel note);
     }
 
@@ -41,8 +42,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.list_item, parent, false);
-        NoteViewHolder holder = new NoteViewHolder(view, onItemClickListener);
-        return holder;
+        return new NoteViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -65,12 +65,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
             titleTV = itemView.findViewById(R.id.tv_title);
             descTV = itemView.findViewById(R.id.tv_description);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    onItemClickListener.onItemClick(position, notes.get(position));
-                }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                onItemClickListener.onItemClick(position, notes.get(position));
             });
         }
     }

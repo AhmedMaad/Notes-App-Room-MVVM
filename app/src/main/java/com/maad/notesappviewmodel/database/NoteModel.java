@@ -1,15 +1,17 @@
-package com.maad.notesappviewmodel;
+package com.maad.notesappviewmodel.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "note")
+import com.maad.notesappviewmodel.utils.Constants;
+
+@Entity(tableName = Constants.TABLE_NAME)
 public class NoteModel {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
+    @ColumnInfo(name = Constants.ID)
     private int id;
     private String title;
     private String description;

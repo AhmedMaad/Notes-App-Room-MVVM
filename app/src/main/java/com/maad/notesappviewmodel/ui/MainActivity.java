@@ -1,9 +1,8 @@
-package com.maad.notesappviewmodel;
+package com.maad.notesappviewmodel.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.List;
+import com.maad.notesappviewmodel.utils.Constants;
+import com.maad.notesappviewmodel.database.NoteModel;
+import com.maad.notesappviewmodel.NoteViewModel;
+import com.maad.notesappviewmodel.R;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.OnItemClickListener {
 
@@ -33,20 +35,15 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnIte
                         .getInstance(this.getApplication())).get(NoteViewModel.class);
 
         viewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        viewModel.getAllNotes().observe(this, new Observer<List<NoteModel>>() {
-            @Override
-            public void onChanged(List<NoteModel> noteModels) {
-                View view = findViewById(R.id.layout_no_notes);
-                if (noteModels.size() == 0){
-                    view.setVisibility(View.VISIBLE);
-                }
-                else{
-                    view.setVisibility(View.INVISIBLE);
-                    adapter = new NoteAdapter(MainActivity.this, noteModels);
-                    recyclerView.setAdapter(adapter);
-                    //adapter.notifyDataSetChanged();
-                    adapter.setOnItemClickListener(MainActivity.this);
-                }
+        viewModel.getAllNotes().observe(this, noteModels -> {
+            View view = findViewById(R.id.layout_no_notes);
+            if (noteModels.size() == 0)
+                view.setVisibility(View.VISIBLE);
+            else {
+                view.setVisibility(View.INVISIBLE);
+                adapter = new NoteAdapter(MainActivity.this, noteModels);
+                recyclerView.setAdapter(adapter);
+                adapter.setOnItemClickListener(MainActivity.this);
             }
         });
 
@@ -98,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnIte
     @Override
     public void onItemClick(int position, NoteModel note) {
         Intent i = new Intent(this, NoteDetailsActivity.class);
-        i.putExtra("id", note.getId());
-        i.putExtra("title", note.getTitle());
-        i.putExtra("desc", note.getDescription());
+        i.putExtra(Constants.ID, note.getId());
+        i.putExtra(Constants.TITLE, note.getTitle());
+        i.putExtra(Constants.DESCRIPTION, note.getDescription());
         startActivity(i);
     }
 }

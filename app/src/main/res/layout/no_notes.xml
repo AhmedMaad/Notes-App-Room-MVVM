@@ -9,6 +9,7 @@
         android:id="@+id/image"
         android:layout_width="240dp"
         android:layout_height="240dp"
+        android:contentDescription="@string/no_notes_available"
         android:focusable="true"
         android:src="@drawable/note" />
 
